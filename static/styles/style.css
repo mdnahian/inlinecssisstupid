@@ -1,0 +1,11 @@
+.file{
+	opacity:0;
+	position: absolute;
+	margin-top:-50px;
+	z-index: 1000;
+	cursor:pointer;
+}
+
+.is-red{
+	color:#ff0000;
+}

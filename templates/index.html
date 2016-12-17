@@ -1,0 +1,116 @@
+<!DOCTYPE html>
+<html>
+	<head>
+		<meta charset="UTF-8">
+		<title>Inline CSS is Stupid - Get rid of all your stupid inline CSS</title>
+		<link rel="stylesheet" href="{{url_for('static', filename='styles/bulma.css')}}">
+		<link rel="stylesheet" href="{{url_for('static', filename='styles/font-awesome.min.css')}}">
+		<link rel="stylesheet" href="{{url_for('static', filename='styles/style.css')}}">
+		
+		<script src="https://ajax.googleapis.com/ajax/libs/jquery/3.1.0/jquery.min.js"></script>
+		<script>
+			$("document").ready(function(){
+				var errorCount = 0;
+				
+				$("#file").change(function() {
+					$("#uploadBtn").addClass("is-loading");
+					
+					var file = this.files[0];
+					
+					if(file.type == "text/html" || file.type == "text/htm"){
+						$("#error").html("");
+						errorCount = 0;
+						
+						if(file.size < 5000000){
+							
+							var formData = new FormData();
+							formData.append('file', file, file.name);
+							
+							var xhr = new XMLHttpRequest();
+							xhr.open('POST', '/upload', true);
+							xhr.onload = function () {
+								if (xhr.status === 200) {
+									console.log(xhr.responseText);
+									response = JSON.parse(xhr.responseText);
+									if (response.error != ''){
+										$("#error").html(response.error);
+									} else if (response.filename != '') {
+										window.location.href = response.filename;
+									}
+									$("#uploadBtn").removeClass("is-loading");
+								} else {
+									$("#uploadBtn").removeClass("is-loading");
+									$("#error").html("ERROR: SOMETHING TERRIBLE HAPPENED");
+								}
+							};
+							xhr.send(formData);
+							
+							
+						} else {
+							$("#error").html("TOO LARGE - WTH IS WITH THIS FILE? "+(file.size/1000000)+"MB? REALLY?");
+							$("#uploadBtn").removeClass("is-loading");
+						}
+					} else {
+						if (errorCount == 0){
+							$("#error").html("WRONG FILE FORMAT - PLEASE READ BEFORE YOU UPLOAD SHIT");
+							$("#uploadBtn").removeClass("is-loading");
+							errorCount++;
+						} else if(errorCount == 1){
+							$("#error").html("WRONG FILE FORMAT - ARE YOU STUPID? UPLOAD ONLY .html OR .htm FILES ONLY");
+							$("#uploadBtn").removeClass("is-loading");
+							errorCount++;
+						} else {
+							$("#error").html("WRONG FILE FORMAT - FUCK YOU");
+							$("#uploadBtn").removeClass("is-loading");
+							errorCount = 0;
+						}
+						
+					}
+					
+								
+					
+				});
+				
+			});
+
+		</script>
+	</head>
+	<body>
+		<div class="container">
+			
+			
+			<section class="hero is-fullheight is-warning">
+
+				<div class="hero-body">
+					<div class="container has-text-centered">
+						<h3 class="title is-2">
+							Inline CSS is Stupid
+						</h3>
+						<h4 class="subtitle is-4">Upload File -> CSS File Generated -> Stupid Inline CSS Removed</h4>
+						<label id="error" class="label is-red"></label>
+						<div class="control">
+							<center><a id="uploadBtn" class="button is-large is-dark"><span class="icon"><i class="fa fa-upload" aria-hidden="true"></i></span><span>UPLOAD</span></a></center>
+							<form id="upload" enctype="multipart/form-data"><input id="file" class="input file is-large" type="file" name="file"></form>
+						</div>
+						<label class="label">.html or .htm files only</label>
+					</div>
+				</div>
+
+				<div class="hero-foot">
+					<div class="container">
+						<div class="tabs is-centered">
+							<ul>
+								<li><a href="http://mdislam.com">Built by Md Islam</a></li>
+							</ul>
+						</div>
+				</div>
+			</section>			
+			
+			
+			
+		</div>
+		
+		
+				
+	</body>
+</html>
