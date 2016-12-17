@@ -47,7 +47,7 @@
 							
 							
 						} else {
-							$("#error").html("TOO LARGE - WTH IS WITH THIS FILE? "+(file.size/1000000)+"MB? REALLY?");
+							$("#error").html("TOO LARGE - "+(file.size/1000000)+"MB? REALLY?");
 							$("#uploadBtn").removeClass("is-loading");
 						}
 					} else {
@@ -56,11 +56,11 @@
 							$("#uploadBtn").removeClass("is-loading");
 							errorCount++;
 						} else if(errorCount == 1){
-							$("#error").html("WRONG FILE FORMAT - ARE YOU STUPID? UPLOAD ONLY .html OR .htm FILES ONLY");
+							$("#error").html("WRONG FILE FORMAT - CAN YOU READ? UPLOAD ONLY .html OR .htm FILES");
 							$("#uploadBtn").removeClass("is-loading");
 							errorCount++;
 						} else {
-							$("#error").html("WRONG FILE FORMAT - FUCK YOU");
+							$("#error").html("WRONG FILE FORMAT - ...");
 							$("#uploadBtn").removeClass("is-loading");
 							errorCount = 0;
 						}
